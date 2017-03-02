@@ -531,8 +531,48 @@ export default Ember.Component.extend({
     }, 10000);//run ever 10000ms
   }
 });
+```   
+#### Authors 
+Gabi Wethor 
+#### Plugin Name (which plugin did you look at?) 
+Cordova Plugin Battery Status
+https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-battery-status/index.html
+#### Usage
+#### 1. Install Cordova Plugin 
+[ember cdv:plugin add cordova-plugin-battery-status]
+#### 2. Generate Ember Component
+[ember generate component battery-display]
+#### 3. Edit the following files: 
+#### 3a. application.hbs 
+Calls the battery-display component. 
 ```  
+Battery Status
+{{battery-display}} 
+```
+#### 3b. battery-display.hbs 
+Calls the level variable from the battery-display.js file. I included a % because the battery status needs to display as a percentage. 
+```
+Battery Level: {{lvl}} % <br>
+```
+#### 3c. battery-display.js 
+Declaring our variables and utilizing the navigator to call the current battery status. Then multiplied by 100 to convert to a whole number.
+```
+import Ember from 'ember';
 
+export default Ember.Component.extend({
+  lvl: 0,
+  on: true,
+  startLogging: function(){
+      var component = this;
+      this.onBatteryStatus(component);
+  }.on('init'),
+  onBatteryStatus: function (component) {
+     navigator.getBattery().then(function(battery){
+     component.set('lvl', battery.level * 100);
+     });
+	}
+});
+```
 [Top](#table-of-contents)
 
 ### Next time we explore vulnerabilities and exploitations in hybrid apps.
